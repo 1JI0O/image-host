@@ -8,7 +8,7 @@ Run interactively:
 
 Or use one-shot mode:
     python github_raw_tui.py "https://github.com/owner/repo/blob/main/path/image.webp"
-    python github_raw_tui.py "https://github.com/owner/repo/tree/main/path" --format markdown
+    python github_raw_tui.py "https://github.com/owner/repo/tree/main/path" --format raw
     python github_raw_tui.py "https://github.com/owner/repo/tree/main/path" --decode-url
 """
 
@@ -224,15 +224,14 @@ def write_output(path: str, lines: list[str]) -> None:
 def choose_format() -> str:
     while True:
         print("\n输出格式：")
-        print("  1. 原始 raw 链接")
-        print("  2. Markdown 图片引用")
+        print("  1. Markdown 图片引用")
+        print("  2. 原始 raw 链接")
         choice = input("请选择 [1/2，默认 1]：").strip()
         if choice in {"", "1"}:
-            return "raw"
-        if choice == "2":
             return "markdown"
+        if choice == "2":
+            return "raw"
         print("请输入 1 或 2。")
-
 
 def choose_decode_url() -> bool:
     while True:
@@ -243,14 +242,6 @@ def choose_decode_url() -> bool:
             return True
         print("请输入 y 或 n。")
 
-
-def prompt_save(lines: list[str]) -> None:
-    target = input("\n保存到文件？直接回车跳过：").strip().strip('"')
-    if not target:
-        return
-
-    write_output(target, lines)
-    print(f"已保存：{target}")
 
 
 def interactive_main() -> int:
@@ -277,8 +268,6 @@ def interactive_main() -> int:
         for line in lines:
             print(line)
 
-        if lines:
-            prompt_save(lines)
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
@@ -290,8 +279,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
         "-f",
         "--format",
         choices=("raw", "markdown"),
-        default="raw",
-        help="output format, default: raw",
+        default="markdown",
+        help="output format, default: markdown",
     )
     parser.add_argument("-o", "--output", help="write result to a UTF-8 text file")
     parser.add_argument(
