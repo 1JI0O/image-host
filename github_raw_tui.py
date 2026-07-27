@@ -10,6 +10,7 @@ Or use one-shot mode:
     python github_raw_tui.py "https://github.com/owner/repo/blob/main/path/image.webp"
     python github_raw_tui.py "https://github.com/owner/repo/tree/main/path" --format raw
     python github_raw_tui.py "https://github.com/owner/repo/tree/main/path" --decode-url
+    python github_raw_tui.py "看番/新攻壳机动队/第3集"
 """
 
 from __future__ import annotations
@@ -17,12 +18,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import Iterable
 
 
@@ -64,6 +67,66 @@ class LinkError(ValueError):
     """Raised when a link cannot be parsed or processed."""
 
 
+@dataclass(frozen=True)
+class GitHubRepo:
+    owner: str
+    repo: str
+    ref: str
+
+
+def script_root() -> Path:
+    return Path(__file__).resolve().parent
+
+
+def run_git(args: list[str], cwd: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError) as exc:
+        raise LinkError("could not read Git repository info") from exc
+
+    return result.stdout.strip()
+
+
+def parse_github_remote(remote_url: str) -> tuple[str, str]:
+    ssh_match = re.match(r"^(?:git@|ssh://git@)github\.com[:/](?P<owner>[^/]+)/(?P<repo>[^/]+?)(?:\.git)?/?$", remote_url)
+    if ssh_match:
+        return ssh_match.group("owner"), ssh_match.group("repo")
+
+    parsed = urllib.parse.urlparse(remote_url)
+    if parsed.netloc.lower() != "github.com":
+        raise LinkError("git remote is not a github.com repository")
+
+    parts = [part for part in parsed.path.strip("/").split("/") if part]
+    if len(parts) < 2:
+        raise LinkError("git remote is missing owner/repo")
+
+    repo = parts[1]
+    if repo.endswith(".git"):
+        repo = repo[:-4]
+    return parts[0], repo
+
+
+def get_local_repo(root: Path) -> GitHubRepo:
+    remote_url = run_git(["remote", "get-url", "origin"], root)
+    owner, repo = parse_github_remote(remote_url)
+
+    try:
+        ref = run_git(["branch", "--show-current"], root)
+    except LinkError:
+        ref = ""
+    if not ref:
+        ref = "main"
+
+    return GitHubRepo(owner=owner, repo=repo, ref=ref)
+
+
 def parse_github_link(link: str) -> GitHubLink:
     text = link.strip()
     if not text:
@@ -98,6 +161,10 @@ def parse_github_link(link: str) -> GitHubLink:
 
     raise LinkError("unsupported host; paste a github.com or raw.githubusercontent.com link")
 
+
+def is_url(text: str) -> bool:
+    parsed = urllib.parse.urlparse(text)
+    return bool(parsed.scheme and parsed.netloc)
 
 def quote_path(path: str) -> str:
     return "/".join(urllib.parse.quote(part, safe="") for part in path.split("/"))
@@ -182,7 +249,53 @@ def collect_directory_images(link: GitHubLink) -> list[str]:
     return results
 
 
+def local_relative_path(text: str) -> str:
+    path = urllib.parse.unquote(text.strip().strip('"').strip("'")).replace("\\", "/")
+    path = path.lstrip("/")
+    if not path:
+        raise LinkError("empty path")
+    return path
+
+
+def resolve_local_path(root: Path, relative_path: str) -> Path:
+    target = (root / relative_path).resolve()
+    try:
+        target.relative_to(root.resolve())
+    except ValueError as exc:
+        raise LinkError("relative path must stay inside the repository root") from exc
+    return target
+
+
+def local_images_from_path(root: Path, repo: GitHubRepo, relative_path: str) -> list[str]:
+    target = resolve_local_path(root, relative_path)
+    if not target.exists():
+        raise LinkError(f"local path does not exist: {relative_path}")
+
+    if target.is_file():
+        normalized = target.relative_to(root).as_posix()
+        if not is_image_path(normalized):
+            raise LinkError("the local file does not look like an image")
+        return [raw_url((repo.owner, repo.repo, repo.ref, normalized))]
+
+    if not target.is_dir():
+        raise LinkError("local path must be a file or directory")
+
+    urls: list[str] = []
+    for item in sorted(target.rglob("*")):
+        if not item.is_file():
+            continue
+        normalized = item.relative_to(root).as_posix()
+        if is_image_path(normalized):
+            urls.append(raw_url((repo.owner, repo.repo, repo.ref, normalized)))
+    return urls
+
+
 def convert_link(link: str) -> list[str]:
+    if not is_url(link.strip()):
+        root = script_root()
+        repo = get_local_repo(root)
+        return local_images_from_path(root, repo, local_relative_path(link))
+
     parsed = parse_github_link(link)
     if parsed.kind == "tree":
         return collect_directory_images(parsed)
@@ -191,7 +304,6 @@ def convert_link(link: str) -> list[str]:
         raise LinkError("the file link does not look like an image")
 
     return [raw_url(parsed)]
-
 
 def markdown_alt_from_url(url: str) -> str:
     path = urllib.parse.urlparse(url).path
@@ -246,10 +358,10 @@ def choose_decode_url() -> bool:
 
 def interactive_main() -> int:
     print("GitHub Raw 链接生成器")
-    print("支持 github.com 的 /blob/ 图片链接、/tree/ 目录链接，以及 raw.githubusercontent.com 链接。")
+    print("支持 GitHub 图片/目录链接、raw 链接，以及基于仓库根目录的相对路径。")
 
     while True:
-        link = input("\n粘贴链接（直接回车退出）：").strip()
+        link = input("\n粘贴链接或相对路径（直接回车退出）：").strip()
         if not link:
             print("已退出。")
             return 0
@@ -274,7 +386,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Convert GitHub image file or directory links to raw.githubusercontent.com links.",
     )
-    parser.add_argument("link", nargs="?", help="GitHub blob/tree/raw link to convert")
+    parser.add_argument("link", nargs="?", help="GitHub blob/tree/raw link or repository-relative path to convert")
     parser.add_argument(
         "-f",
         "--format",
