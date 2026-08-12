@@ -1,0 +1,15 @@
+views:
+  - type: cards
+    name: 表格
+    filters:
+      and:
+        - file.ext != "base"
+        - file.ext != "py"
+        - file.ext != "bat"
+    order:
+      - file.name
+      - file.path
+    sort:
+      - property: file.mtime
+        direction: DESC
+    image: file.file
