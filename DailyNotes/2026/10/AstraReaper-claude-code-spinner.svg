@@ -1,0 +1,1064 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 56" width="640" height="56" font-family="ui-monospace, 'SF Mono', Menlo, 'Cascadia Code', monospace" font-weight="600" font-size="16">
+  <style>
+    @keyframes g0 { 0% { opacity: 1; } 8.3333% { opacity: 1; } 8.3533% { opacity: 0; } 91.6667% { opacity: 0; } 91.6867% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes g1 { 0% { opacity: 0; } 8.3333% { opacity: 0; } 8.3533% { opacity: 1; } 16.6667% { opacity: 1; } 16.6867% { opacity: 0; } 83.3333% { opacity: 0; } 83.3533% { opacity: 1; } 91.6667% { opacity: 1; } 91.6867% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes g2 { 0% { opacity: 0; } 16.6667% { opacity: 0; } 16.6867% { opacity: 1; } 25% { opacity: 1; } 25.02% { opacity: 0; } 75% { opacity: 0; } 75.02% { opacity: 1; } 83.3333% { opacity: 1; } 83.3533% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes g3 { 0% { opacity: 0; } 25% { opacity: 0; } 25.02% { opacity: 1; } 33.3333% { opacity: 1; } 33.3533% { opacity: 0; } 66.6667% { opacity: 0; } 66.6867% { opacity: 1; } 75% { opacity: 1; } 75.02% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes g4 { 0% { opacity: 0; } 33.3333% { opacity: 0; } 33.3533% { opacity: 1; } 41.6667% { opacity: 1; } 41.6867% { opacity: 0; } 58.3333% { opacity: 0; } 58.3533% { opacity: 1; } 66.6667% { opacity: 1; } 66.6867% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes g5 { 0% { opacity: 0; } 41.6667% { opacity: 0; } 41.6867% { opacity: 1; } 58.3333% { opacity: 1; } 58.3533% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes glyphColor { 0% { fill: #D77757; } 75% { fill: #D77757; } 75.02% { fill: #5769F7; } 77.5% { fill: #5769F7; } 77.52% { fill: #D77757; } 95.8333% { fill: #D77757; } 97.5% { fill: #AB2B3F; } 99.98% { fill: #AB2B3F; } 100% { fill: #D77757; } }
+    /* .g0-.g5 (opacity, per-frame) and .glyph (fill, shared) used to both land on
+       the same text element. The animation property is a shorthand, so two classes
+       each setting it don't merge - the later rule wins outright and silently kills
+       the other's animation. Every .gN rule below lists BOTH animations in one
+       comma-separated value instead of splitting them across .gN and .glyph.
+       glyphColor has three real states (Spinner.tsx/theme.ts/REPL.tsx), not a
+       yellow-to-red gradient: fixed orange 'claude' (#D77757) normally; a hard
+       cut to blue 'claudeBlue_FOR_SYSTEM_SPINNER' (#5769F7) while PreCompact/
+       PostCompact/SessionStart hooks run (REPL.tsx onCompactProgress, an
+       instant on/off state, not a fade); and a smooth ~2s fade to error red
+       (#AB2B3F) when stalled (useStalledAnimation.ts). All three windows below
+       are computed from the verb list's actual positions, not hand-typed. */
+    .g0 { animation: g0 1.44s linear infinite, glyphColor 120s linear infinite; }
+    .g1 { animation: g1 1.44s linear infinite, glyphColor 120s linear infinite; }
+    .g2 { animation: g2 1.44s linear infinite, glyphColor 120s linear infinite; }
+    .g3 { animation: g3 1.44s linear infinite, glyphColor 120s linear infinite; }
+    .g4 { animation: g4 1.44s linear infinite, glyphColor 120s linear infinite; }
+    .g5 { animation: g5 1.44s linear infinite, glyphColor 120s linear infinite; }
+
+    /* Verb shimmer: a ~3-char highlight band sweeping right-to-left across the
+       word (matches GlimmerMessage's traveling glimmerIndex), not a uniform
+       whole-word pulse. .verbGroup (orange) is the normal state; .verbGroupBlue
+       reuses the identical shimmer mechanics with the system-spinner blue pair
+       for the compaction-hook cameo below. Both share one set of nth-last-child
+       delay rules, sized to the longest shimmering string (24 chars, "Compacting
+       conversation&#x2026;") so coverage is computed from the real strings, not guessed. */
+    @keyframes verbShimmer { 0% { fill: #EB9F7F; } 8% { fill: #D77757; } 92% { fill: #D77757; } 100% { fill: #EB9F7F; } }
+    @keyframes verbShimmerBlue { 0% { fill: #7587FF; } 8% { fill: #5769F7; } 92% { fill: #5769F7; } 100% { fill: #7587FF; } }
+    .verbGroup &gt; tspan { fill: #D77757; animation: verbShimmer 3s linear infinite; }
+    .verbGroupBlue &gt; tspan { fill: #5769F7; animation: verbShimmerBlue 3s linear infinite; }
+    .verbGroup &gt; tspan:nth-last-child(1), .verbGroupBlue &gt; tspan:nth-last-child(1) { animation-delay: 0.00s; }
+    .verbGroup &gt; tspan:nth-last-child(2), .verbGroupBlue &gt; tspan:nth-last-child(2) { animation-delay: -0.07s; }
+    .verbGroup &gt; tspan:nth-last-child(3), .verbGroupBlue &gt; tspan:nth-last-child(3) { animation-delay: -0.13s; }
+    .verbGroup &gt; tspan:nth-last-child(4), .verbGroupBlue &gt; tspan:nth-last-child(4) { animation-delay: -0.20s; }
+    .verbGroup &gt; tspan:nth-last-child(5), .verbGroupBlue &gt; tspan:nth-last-child(5) { animation-delay: -0.26s; }
+    .verbGroup &gt; tspan:nth-last-child(6), .verbGroupBlue &gt; tspan:nth-last-child(6) { animation-delay: -0.33s; }
+    .verbGroup &gt; tspan:nth-last-child(7), .verbGroupBlue &gt; tspan:nth-last-child(7) { animation-delay: -0.39s; }
+    .verbGroup &gt; tspan:nth-last-child(8), .verbGroupBlue &gt; tspan:nth-last-child(8) { animation-delay: -0.46s; }
+    .verbGroup &gt; tspan:nth-last-child(9), .verbGroupBlue &gt; tspan:nth-last-child(9) { animation-delay: -0.52s; }
+    .verbGroup &gt; tspan:nth-last-child(10), .verbGroupBlue &gt; tspan:nth-last-child(10) { animation-delay: -0.59s; }
+    .verbGroup &gt; tspan:nth-last-child(11), .verbGroupBlue &gt; tspan:nth-last-child(11) { animation-delay: -0.65s; }
+    .verbGroup &gt; tspan:nth-last-child(12), .verbGroupBlue &gt; tspan:nth-last-child(12) { animation-delay: -0.72s; }
+    .verbGroup &gt; tspan:nth-last-child(13), .verbGroupBlue &gt; tspan:nth-last-child(13) { animation-delay: -0.78s; }
+    .verbGroup &gt; tspan:nth-last-child(14), .verbGroupBlue &gt; tspan:nth-last-child(14) { animation-delay: -0.85s; }
+    .verbGroup &gt; tspan:nth-last-child(15), .verbGroupBlue &gt; tspan:nth-last-child(15) { animation-delay: -0.91s; }
+    .verbGroup &gt; tspan:nth-last-child(16), .verbGroupBlue &gt; tspan:nth-last-child(16) { animation-delay: -0.98s; }
+    .verbGroup &gt; tspan:nth-last-child(17), .verbGroupBlue &gt; tspan:nth-last-child(17) { animation-delay: -1.04s; }
+    .verbGroup &gt; tspan:nth-last-child(18), .verbGroupBlue &gt; tspan:nth-last-child(18) { animation-delay: -1.11s; }
+    .verbGroup &gt; tspan:nth-last-child(19), .verbGroupBlue &gt; tspan:nth-last-child(19) { animation-delay: -1.17s; }
+    .verbGroup &gt; tspan:nth-last-child(20), .verbGroupBlue &gt; tspan:nth-last-child(20) { animation-delay: -1.24s; }
+    .verbGroup &gt; tspan:nth-last-child(21), .verbGroupBlue &gt; tspan:nth-last-child(21) { animation-delay: -1.30s; }
+    .verbGroup &gt; tspan:nth-last-child(22), .verbGroupBlue &gt; tspan:nth-last-child(22) { animation-delay: -1.37s; }
+    .verbGroup &gt; tspan:nth-last-child(23), .verbGroupBlue &gt; tspan:nth-last-child(23) { animation-delay: -1.43s; }
+    .verbGroup &gt; tspan:nth-last-child(24), .verbGroupBlue &gt; tspan:nth-last-child(24) { animation-delay: -1.50s; }
+    .verbStalled { fill: #AB2B3F; }
+
+    /* Thinking-text glow: matches THINKING_INACTIVE (#999) to THINKING_INACTIVE_SHIMMER
+       (#B9B9B9) sine pulse, not a full gray-to-white sweep. Keeps shimmering even
+       during a stall - useStalledAnimation only reddens the glyph/verb, never this. */
+    @keyframes thinkPulse { 0% { fill: #999999; } 50% { fill: #B9B9B9; } 100% { fill: #999999; } }
+    .thinkText { animation: thinkPulse 2s ease-in-out infinite; }
+    /* 40 slots, 3s each = a 120s (2-minute) loop: 38 verbs sampled from the real
+       SPINNER_VERBS list, one "Compacting conversation&#x2026;" cameo (the real override
+       message REPL.tsx sets during compaction - genuinely a third color state, in
+       blue), and "Wandering&#x2026;" as the stalled-red cameo. Each slot's 3s window is
+       subdivided into three 1s sub-frames so the elapsed-time readout ticks up once
+       per second for the full two minutes - a single unbroken sequence (1,2,3...120),
+       never reset or skipped just because the verb text changed. Past 60s it switches
+       to "Xm Ys" to match formatDuration's real mm:ss format instead of "61s","62s". */
+    @keyframes t0 { 0% { opacity: 1; } 0.8333% { opacity: 1; } 0.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t0 { animation: t0 120s linear infinite; }
+    @keyframes t1 { 0% { opacity: 0; } 0.8333% { opacity: 0; } 0.8533% { opacity: 1; } 1.6667% { opacity: 1; } 1.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t1 { animation: t1 120s linear infinite; }
+    @keyframes t2 { 0% { opacity: 0; } 1.6667% { opacity: 0; } 1.6867% { opacity: 1; } 2.5% { opacity: 1; } 2.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t2 { animation: t2 120s linear infinite; }
+    @keyframes t3 { 0% { opacity: 0; } 2.5% { opacity: 0; } 2.52% { opacity: 1; } 3.3333% { opacity: 1; } 3.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t3 { animation: t3 120s linear infinite; }
+    @keyframes t4 { 0% { opacity: 0; } 3.3333% { opacity: 0; } 3.3533% { opacity: 1; } 4.1667% { opacity: 1; } 4.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t4 { animation: t4 120s linear infinite; }
+    @keyframes t5 { 0% { opacity: 0; } 4.1667% { opacity: 0; } 4.1867% { opacity: 1; } 5% { opacity: 1; } 5.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t5 { animation: t5 120s linear infinite; }
+    @keyframes t6 { 0% { opacity: 0; } 5% { opacity: 0; } 5.02% { opacity: 1; } 5.8333% { opacity: 1; } 5.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t6 { animation: t6 120s linear infinite; }
+    @keyframes t7 { 0% { opacity: 0; } 5.8333% { opacity: 0; } 5.8533% { opacity: 1; } 6.6667% { opacity: 1; } 6.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t7 { animation: t7 120s linear infinite; }
+    @keyframes t8 { 0% { opacity: 0; } 6.6667% { opacity: 0; } 6.6867% { opacity: 1; } 7.5% { opacity: 1; } 7.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t8 { animation: t8 120s linear infinite; }
+    @keyframes t9 { 0% { opacity: 0; } 7.5% { opacity: 0; } 7.52% { opacity: 1; } 8.3333% { opacity: 1; } 8.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t9 { animation: t9 120s linear infinite; }
+    @keyframes t10 { 0% { opacity: 0; } 8.3333% { opacity: 0; } 8.3533% { opacity: 1; } 9.1667% { opacity: 1; } 9.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t10 { animation: t10 120s linear infinite; }
+    @keyframes t11 { 0% { opacity: 0; } 9.1667% { opacity: 0; } 9.1867% { opacity: 1; } 10% { opacity: 1; } 10.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t11 { animation: t11 120s linear infinite; }
+    @keyframes t12 { 0% { opacity: 0; } 10% { opacity: 0; } 10.02% { opacity: 1; } 10.8333% { opacity: 1; } 10.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t12 { animation: t12 120s linear infinite; }
+    @keyframes t13 { 0% { opacity: 0; } 10.8333% { opacity: 0; } 10.8533% { opacity: 1; } 11.6667% { opacity: 1; } 11.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t13 { animation: t13 120s linear infinite; }
+    @keyframes t14 { 0% { opacity: 0; } 11.6667% { opacity: 0; } 11.6867% { opacity: 1; } 12.5% { opacity: 1; } 12.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t14 { animation: t14 120s linear infinite; }
+    @keyframes t15 { 0% { opacity: 0; } 12.5% { opacity: 0; } 12.52% { opacity: 1; } 13.3333% { opacity: 1; } 13.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t15 { animation: t15 120s linear infinite; }
+    @keyframes t16 { 0% { opacity: 0; } 13.3333% { opacity: 0; } 13.3533% { opacity: 1; } 14.1667% { opacity: 1; } 14.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t16 { animation: t16 120s linear infinite; }
+    @keyframes t17 { 0% { opacity: 0; } 14.1667% { opacity: 0; } 14.1867% { opacity: 1; } 15% { opacity: 1; } 15.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t17 { animation: t17 120s linear infinite; }
+    @keyframes t18 { 0% { opacity: 0; } 15% { opacity: 0; } 15.02% { opacity: 1; } 15.8333% { opacity: 1; } 15.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t18 { animation: t18 120s linear infinite; }
+    @keyframes t19 { 0% { opacity: 0; } 15.8333% { opacity: 0; } 15.8533% { opacity: 1; } 16.6667% { opacity: 1; } 16.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t19 { animation: t19 120s linear infinite; }
+    @keyframes t20 { 0% { opacity: 0; } 16.6667% { opacity: 0; } 16.6867% { opacity: 1; } 17.5% { opacity: 1; } 17.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t20 { animation: t20 120s linear infinite; }
+    @keyframes t21 { 0% { opacity: 0; } 17.5% { opacity: 0; } 17.52% { opacity: 1; } 18.3333% { opacity: 1; } 18.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t21 { animation: t21 120s linear infinite; }
+    @keyframes t22 { 0% { opacity: 0; } 18.3333% { opacity: 0; } 18.3533% { opacity: 1; } 19.1667% { opacity: 1; } 19.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t22 { animation: t22 120s linear infinite; }
+    @keyframes t23 { 0% { opacity: 0; } 19.1667% { opacity: 0; } 19.1867% { opacity: 1; } 20% { opacity: 1; } 20.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t23 { animation: t23 120s linear infinite; }
+    @keyframes t24 { 0% { opacity: 0; } 20% { opacity: 0; } 20.02% { opacity: 1; } 20.8333% { opacity: 1; } 20.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t24 { animation: t24 120s linear infinite; }
+    @keyframes t25 { 0% { opacity: 0; } 20.8333% { opacity: 0; } 20.8533% { opacity: 1; } 21.6667% { opacity: 1; } 21.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t25 { animation: t25 120s linear infinite; }
+    @keyframes t26 { 0% { opacity: 0; } 21.6667% { opacity: 0; } 21.6867% { opacity: 1; } 22.5% { opacity: 1; } 22.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t26 { animation: t26 120s linear infinite; }
+    @keyframes t27 { 0% { opacity: 0; } 22.5% { opacity: 0; } 22.52% { opacity: 1; } 23.3333% { opacity: 1; } 23.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t27 { animation: t27 120s linear infinite; }
+    @keyframes t28 { 0% { opacity: 0; } 23.3333% { opacity: 0; } 23.3533% { opacity: 1; } 24.1667% { opacity: 1; } 24.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t28 { animation: t28 120s linear infinite; }
+    @keyframes t29 { 0% { opacity: 0; } 24.1667% { opacity: 0; } 24.1867% { opacity: 1; } 25% { opacity: 1; } 25.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t29 { animation: t29 120s linear infinite; }
+    @keyframes t30 { 0% { opacity: 0; } 25% { opacity: 0; } 25.02% { opacity: 1; } 25.8333% { opacity: 1; } 25.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t30 { animation: t30 120s linear infinite; }
+    @keyframes t31 { 0% { opacity: 0; } 25.8333% { opacity: 0; } 25.8533% { opacity: 1; } 26.6667% { opacity: 1; } 26.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t31 { animation: t31 120s linear infinite; }
+    @keyframes t32 { 0% { opacity: 0; } 26.6667% { opacity: 0; } 26.6867% { opacity: 1; } 27.5% { opacity: 1; } 27.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t32 { animation: t32 120s linear infinite; }
+    @keyframes t33 { 0% { opacity: 0; } 27.5% { opacity: 0; } 27.52% { opacity: 1; } 28.3333% { opacity: 1; } 28.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t33 { animation: t33 120s linear infinite; }
+    @keyframes t34 { 0% { opacity: 0; } 28.3333% { opacity: 0; } 28.3533% { opacity: 1; } 29.1667% { opacity: 1; } 29.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t34 { animation: t34 120s linear infinite; }
+    @keyframes t35 { 0% { opacity: 0; } 29.1667% { opacity: 0; } 29.1867% { opacity: 1; } 30% { opacity: 1; } 30.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t35 { animation: t35 120s linear infinite; }
+    @keyframes t36 { 0% { opacity: 0; } 30% { opacity: 0; } 30.02% { opacity: 1; } 30.8333% { opacity: 1; } 30.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t36 { animation: t36 120s linear infinite; }
+    @keyframes t37 { 0% { opacity: 0; } 30.8333% { opacity: 0; } 30.8533% { opacity: 1; } 31.6667% { opacity: 1; } 31.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t37 { animation: t37 120s linear infinite; }
+    @keyframes t38 { 0% { opacity: 0; } 31.6667% { opacity: 0; } 31.6867% { opacity: 1; } 32.5% { opacity: 1; } 32.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t38 { animation: t38 120s linear infinite; }
+    @keyframes t39 { 0% { opacity: 0; } 32.5% { opacity: 0; } 32.52% { opacity: 1; } 33.3333% { opacity: 1; } 33.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t39 { animation: t39 120s linear infinite; }
+    @keyframes t40 { 0% { opacity: 0; } 33.3333% { opacity: 0; } 33.3533% { opacity: 1; } 34.1667% { opacity: 1; } 34.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t40 { animation: t40 120s linear infinite; }
+    @keyframes t41 { 0% { opacity: 0; } 34.1667% { opacity: 0; } 34.1867% { opacity: 1; } 35% { opacity: 1; } 35.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t41 { animation: t41 120s linear infinite; }
+    @keyframes t42 { 0% { opacity: 0; } 35% { opacity: 0; } 35.02% { opacity: 1; } 35.8333% { opacity: 1; } 35.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t42 { animation: t42 120s linear infinite; }
+    @keyframes t43 { 0% { opacity: 0; } 35.8333% { opacity: 0; } 35.8533% { opacity: 1; } 36.6667% { opacity: 1; } 36.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t43 { animation: t43 120s linear infinite; }
+    @keyframes t44 { 0% { opacity: 0; } 36.6667% { opacity: 0; } 36.6867% { opacity: 1; } 37.5% { opacity: 1; } 37.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t44 { animation: t44 120s linear infinite; }
+    @keyframes t45 { 0% { opacity: 0; } 37.5% { opacity: 0; } 37.52% { opacity: 1; } 38.3333% { opacity: 1; } 38.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t45 { animation: t45 120s linear infinite; }
+    @keyframes t46 { 0% { opacity: 0; } 38.3333% { opacity: 0; } 38.3533% { opacity: 1; } 39.1667% { opacity: 1; } 39.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t46 { animation: t46 120s linear infinite; }
+    @keyframes t47 { 0% { opacity: 0; } 39.1667% { opacity: 0; } 39.1867% { opacity: 1; } 40% { opacity: 1; } 40.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t47 { animation: t47 120s linear infinite; }
+    @keyframes t48 { 0% { opacity: 0; } 40% { opacity: 0; } 40.02% { opacity: 1; } 40.8333% { opacity: 1; } 40.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t48 { animation: t48 120s linear infinite; }
+    @keyframes t49 { 0% { opacity: 0; } 40.8333% { opacity: 0; } 40.8533% { opacity: 1; } 41.6667% { opacity: 1; } 41.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t49 { animation: t49 120s linear infinite; }
+    @keyframes t50 { 0% { opacity: 0; } 41.6667% { opacity: 0; } 41.6867% { opacity: 1; } 42.5% { opacity: 1; } 42.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t50 { animation: t50 120s linear infinite; }
+    @keyframes t51 { 0% { opacity: 0; } 42.5% { opacity: 0; } 42.52% { opacity: 1; } 43.3333% { opacity: 1; } 43.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t51 { animation: t51 120s linear infinite; }
+    @keyframes t52 { 0% { opacity: 0; } 43.3333% { opacity: 0; } 43.3533% { opacity: 1; } 44.1667% { opacity: 1; } 44.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t52 { animation: t52 120s linear infinite; }
+    @keyframes t53 { 0% { opacity: 0; } 44.1667% { opacity: 0; } 44.1867% { opacity: 1; } 45% { opacity: 1; } 45.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t53 { animation: t53 120s linear infinite; }
+    @keyframes t54 { 0% { opacity: 0; } 45% { opacity: 0; } 45.02% { opacity: 1; } 45.8333% { opacity: 1; } 45.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t54 { animation: t54 120s linear infinite; }
+    @keyframes t55 { 0% { opacity: 0; } 45.8333% { opacity: 0; } 45.8533% { opacity: 1; } 46.6667% { opacity: 1; } 46.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t55 { animation: t55 120s linear infinite; }
+    @keyframes t56 { 0% { opacity: 0; } 46.6667% { opacity: 0; } 46.6867% { opacity: 1; } 47.5% { opacity: 1; } 47.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t56 { animation: t56 120s linear infinite; }
+    @keyframes t57 { 0% { opacity: 0; } 47.5% { opacity: 0; } 47.52% { opacity: 1; } 48.3333% { opacity: 1; } 48.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t57 { animation: t57 120s linear infinite; }
+    @keyframes t58 { 0% { opacity: 0; } 48.3333% { opacity: 0; } 48.3533% { opacity: 1; } 49.1667% { opacity: 1; } 49.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t58 { animation: t58 120s linear infinite; }
+    @keyframes t59 { 0% { opacity: 0; } 49.1667% { opacity: 0; } 49.1867% { opacity: 1; } 50% { opacity: 1; } 50.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t59 { animation: t59 120s linear infinite; }
+    @keyframes t60 { 0% { opacity: 0; } 50% { opacity: 0; } 50.02% { opacity: 1; } 50.8333% { opacity: 1; } 50.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t60 { animation: t60 120s linear infinite; }
+    @keyframes t61 { 0% { opacity: 0; } 50.8333% { opacity: 0; } 50.8533% { opacity: 1; } 51.6667% { opacity: 1; } 51.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t61 { animation: t61 120s linear infinite; }
+    @keyframes t62 { 0% { opacity: 0; } 51.6667% { opacity: 0; } 51.6867% { opacity: 1; } 52.5% { opacity: 1; } 52.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t62 { animation: t62 120s linear infinite; }
+    @keyframes t63 { 0% { opacity: 0; } 52.5% { opacity: 0; } 52.52% { opacity: 1; } 53.3333% { opacity: 1; } 53.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t63 { animation: t63 120s linear infinite; }
+    @keyframes t64 { 0% { opacity: 0; } 53.3333% { opacity: 0; } 53.3533% { opacity: 1; } 54.1667% { opacity: 1; } 54.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t64 { animation: t64 120s linear infinite; }
+    @keyframes t65 { 0% { opacity: 0; } 54.1667% { opacity: 0; } 54.1867% { opacity: 1; } 55% { opacity: 1; } 55.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t65 { animation: t65 120s linear infinite; }
+    @keyframes t66 { 0% { opacity: 0; } 55% { opacity: 0; } 55.02% { opacity: 1; } 55.8333% { opacity: 1; } 55.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t66 { animation: t66 120s linear infinite; }
+    @keyframes t67 { 0% { opacity: 0; } 55.8333% { opacity: 0; } 55.8533% { opacity: 1; } 56.6667% { opacity: 1; } 56.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t67 { animation: t67 120s linear infinite; }
+    @keyframes t68 { 0% { opacity: 0; } 56.6667% { opacity: 0; } 56.6867% { opacity: 1; } 57.5% { opacity: 1; } 57.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t68 { animation: t68 120s linear infinite; }
+    @keyframes t69 { 0% { opacity: 0; } 57.5% { opacity: 0; } 57.52% { opacity: 1; } 58.3333% { opacity: 1; } 58.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t69 { animation: t69 120s linear infinite; }
+    @keyframes t70 { 0% { opacity: 0; } 58.3333% { opacity: 0; } 58.3533% { opacity: 1; } 59.1667% { opacity: 1; } 59.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t70 { animation: t70 120s linear infinite; }
+    @keyframes t71 { 0% { opacity: 0; } 59.1667% { opacity: 0; } 59.1867% { opacity: 1; } 60% { opacity: 1; } 60.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t71 { animation: t71 120s linear infinite; }
+    @keyframes t72 { 0% { opacity: 0; } 60% { opacity: 0; } 60.02% { opacity: 1; } 60.8333% { opacity: 1; } 60.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t72 { animation: t72 120s linear infinite; }
+    @keyframes t73 { 0% { opacity: 0; } 60.8333% { opacity: 0; } 60.8533% { opacity: 1; } 61.6667% { opacity: 1; } 61.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t73 { animation: t73 120s linear infinite; }
+    @keyframes t74 { 0% { opacity: 0; } 61.6667% { opacity: 0; } 61.6867% { opacity: 1; } 62.5% { opacity: 1; } 62.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t74 { animation: t74 120s linear infinite; }
+    @keyframes t75 { 0% { opacity: 0; } 62.5% { opacity: 0; } 62.52% { opacity: 1; } 63.3333% { opacity: 1; } 63.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t75 { animation: t75 120s linear infinite; }
+    @keyframes t76 { 0% { opacity: 0; } 63.3333% { opacity: 0; } 63.3533% { opacity: 1; } 64.1667% { opacity: 1; } 64.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t76 { animation: t76 120s linear infinite; }
+    @keyframes t77 { 0% { opacity: 0; } 64.1667% { opacity: 0; } 64.1867% { opacity: 1; } 65% { opacity: 1; } 65.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t77 { animation: t77 120s linear infinite; }
+    @keyframes t78 { 0% { opacity: 0; } 65% { opacity: 0; } 65.02% { opacity: 1; } 65.8333% { opacity: 1; } 65.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t78 { animation: t78 120s linear infinite; }
+    @keyframes t79 { 0% { opacity: 0; } 65.8333% { opacity: 0; } 65.8533% { opacity: 1; } 66.6667% { opacity: 1; } 66.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t79 { animation: t79 120s linear infinite; }
+    @keyframes t80 { 0% { opacity: 0; } 66.6667% { opacity: 0; } 66.6867% { opacity: 1; } 67.5% { opacity: 1; } 67.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t80 { animation: t80 120s linear infinite; }
+    @keyframes t81 { 0% { opacity: 0; } 67.5% { opacity: 0; } 67.52% { opacity: 1; } 68.3333% { opacity: 1; } 68.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t81 { animation: t81 120s linear infinite; }
+    @keyframes t82 { 0% { opacity: 0; } 68.3333% { opacity: 0; } 68.3533% { opacity: 1; } 69.1667% { opacity: 1; } 69.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t82 { animation: t82 120s linear infinite; }
+    @keyframes t83 { 0% { opacity: 0; } 69.1667% { opacity: 0; } 69.1867% { opacity: 1; } 70% { opacity: 1; } 70.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t83 { animation: t83 120s linear infinite; }
+    @keyframes t84 { 0% { opacity: 0; } 70% { opacity: 0; } 70.02% { opacity: 1; } 70.8333% { opacity: 1; } 70.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t84 { animation: t84 120s linear infinite; }
+    @keyframes t85 { 0% { opacity: 0; } 70.8333% { opacity: 0; } 70.8533% { opacity: 1; } 71.6667% { opacity: 1; } 71.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t85 { animation: t85 120s linear infinite; }
+    @keyframes t86 { 0% { opacity: 0; } 71.6667% { opacity: 0; } 71.6867% { opacity: 1; } 72.5% { opacity: 1; } 72.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t86 { animation: t86 120s linear infinite; }
+    @keyframes t87 { 0% { opacity: 0; } 72.5% { opacity: 0; } 72.52% { opacity: 1; } 73.3333% { opacity: 1; } 73.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t87 { animation: t87 120s linear infinite; }
+    @keyframes t88 { 0% { opacity: 0; } 73.3333% { opacity: 0; } 73.3533% { opacity: 1; } 74.1667% { opacity: 1; } 74.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t88 { animation: t88 120s linear infinite; }
+    @keyframes t89 { 0% { opacity: 0; } 74.1667% { opacity: 0; } 74.1867% { opacity: 1; } 75% { opacity: 1; } 75.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t89 { animation: t89 120s linear infinite; }
+    @keyframes t90 { 0% { opacity: 0; } 75% { opacity: 0; } 75.02% { opacity: 1; } 75.8333% { opacity: 1; } 75.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t90 { animation: t90 120s linear infinite; }
+    @keyframes t91 { 0% { opacity: 0; } 75.8333% { opacity: 0; } 75.8533% { opacity: 1; } 76.6667% { opacity: 1; } 76.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t91 { animation: t91 120s linear infinite; }
+    @keyframes t92 { 0% { opacity: 0; } 76.6667% { opacity: 0; } 76.6867% { opacity: 1; } 77.5% { opacity: 1; } 77.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t92 { animation: t92 120s linear infinite; }
+    @keyframes t93 { 0% { opacity: 0; } 77.5% { opacity: 0; } 77.52% { opacity: 1; } 78.3333% { opacity: 1; } 78.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t93 { animation: t93 120s linear infinite; }
+    @keyframes t94 { 0% { opacity: 0; } 78.3333% { opacity: 0; } 78.3533% { opacity: 1; } 79.1667% { opacity: 1; } 79.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t94 { animation: t94 120s linear infinite; }
+    @keyframes t95 { 0% { opacity: 0; } 79.1667% { opacity: 0; } 79.1867% { opacity: 1; } 80% { opacity: 1; } 80.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t95 { animation: t95 120s linear infinite; }
+    @keyframes t96 { 0% { opacity: 0; } 80% { opacity: 0; } 80.02% { opacity: 1; } 80.8333% { opacity: 1; } 80.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t96 { animation: t96 120s linear infinite; }
+    @keyframes t97 { 0% { opacity: 0; } 80.8333% { opacity: 0; } 80.8533% { opacity: 1; } 81.6667% { opacity: 1; } 81.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t97 { animation: t97 120s linear infinite; }
+    @keyframes t98 { 0% { opacity: 0; } 81.6667% { opacity: 0; } 81.6867% { opacity: 1; } 82.5% { opacity: 1; } 82.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t98 { animation: t98 120s linear infinite; }
+    @keyframes t99 { 0% { opacity: 0; } 82.5% { opacity: 0; } 82.52% { opacity: 1; } 83.3333% { opacity: 1; } 83.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t99 { animation: t99 120s linear infinite; }
+    @keyframes t100 { 0% { opacity: 0; } 83.3333% { opacity: 0; } 83.3533% { opacity: 1; } 84.1667% { opacity: 1; } 84.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t100 { animation: t100 120s linear infinite; }
+    @keyframes t101 { 0% { opacity: 0; } 84.1667% { opacity: 0; } 84.1867% { opacity: 1; } 85% { opacity: 1; } 85.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t101 { animation: t101 120s linear infinite; }
+    @keyframes t102 { 0% { opacity: 0; } 85% { opacity: 0; } 85.02% { opacity: 1; } 85.8333% { opacity: 1; } 85.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t102 { animation: t102 120s linear infinite; }
+    @keyframes t103 { 0% { opacity: 0; } 85.8333% { opacity: 0; } 85.8533% { opacity: 1; } 86.6667% { opacity: 1; } 86.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t103 { animation: t103 120s linear infinite; }
+    @keyframes t104 { 0% { opacity: 0; } 86.6667% { opacity: 0; } 86.6867% { opacity: 1; } 87.5% { opacity: 1; } 87.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t104 { animation: t104 120s linear infinite; }
+    @keyframes t105 { 0% { opacity: 0; } 87.5% { opacity: 0; } 87.52% { opacity: 1; } 88.3333% { opacity: 1; } 88.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t105 { animation: t105 120s linear infinite; }
+    @keyframes t106 { 0% { opacity: 0; } 88.3333% { opacity: 0; } 88.3533% { opacity: 1; } 89.1667% { opacity: 1; } 89.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t106 { animation: t106 120s linear infinite; }
+    @keyframes t107 { 0% { opacity: 0; } 89.1667% { opacity: 0; } 89.1867% { opacity: 1; } 90% { opacity: 1; } 90.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t107 { animation: t107 120s linear infinite; }
+    @keyframes t108 { 0% { opacity: 0; } 90% { opacity: 0; } 90.02% { opacity: 1; } 90.8333% { opacity: 1; } 90.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t108 { animation: t108 120s linear infinite; }
+    @keyframes t109 { 0% { opacity: 0; } 90.8333% { opacity: 0; } 90.8533% { opacity: 1; } 91.6667% { opacity: 1; } 91.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t109 { animation: t109 120s linear infinite; }
+    @keyframes t110 { 0% { opacity: 0; } 91.6667% { opacity: 0; } 91.6867% { opacity: 1; } 92.5% { opacity: 1; } 92.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t110 { animation: t110 120s linear infinite; }
+    @keyframes t111 { 0% { opacity: 0; } 92.5% { opacity: 0; } 92.52% { opacity: 1; } 93.3333% { opacity: 1; } 93.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t111 { animation: t111 120s linear infinite; }
+    @keyframes t112 { 0% { opacity: 0; } 93.3333% { opacity: 0; } 93.3533% { opacity: 1; } 94.1667% { opacity: 1; } 94.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t112 { animation: t112 120s linear infinite; }
+    @keyframes t113 { 0% { opacity: 0; } 94.1667% { opacity: 0; } 94.1867% { opacity: 1; } 95% { opacity: 1; } 95.02% { opacity: 0; } 100% { opacity: 0; } }
+    .t113 { animation: t113 120s linear infinite; }
+    @keyframes t114 { 0% { opacity: 0; } 95% { opacity: 0; } 95.02% { opacity: 1; } 95.8333% { opacity: 1; } 95.8533% { opacity: 0; } 100% { opacity: 0; } }
+    .t114 { animation: t114 120s linear infinite; }
+    @keyframes t115 { 0% { opacity: 0; } 95.8333% { opacity: 0; } 95.8533% { opacity: 1; } 96.6667% { opacity: 1; } 96.6867% { opacity: 0; } 100% { opacity: 0; } }
+    .t115 { animation: t115 120s linear infinite; }
+    @keyframes t116 { 0% { opacity: 0; } 96.6667% { opacity: 0; } 96.6867% { opacity: 1; } 97.5% { opacity: 1; } 97.52% { opacity: 0; } 100% { opacity: 0; } }
+    .t116 { animation: t116 120s linear infinite; }
+    @keyframes t117 { 0% { opacity: 0; } 97.5% { opacity: 0; } 97.52% { opacity: 1; } 98.3333% { opacity: 1; } 98.3533% { opacity: 0; } 100% { opacity: 0; } }
+    .t117 { animation: t117 120s linear infinite; }
+    @keyframes t118 { 0% { opacity: 0; } 98.3333% { opacity: 0; } 98.3533% { opacity: 1; } 99.1667% { opacity: 1; } 99.1867% { opacity: 0; } 100% { opacity: 0; } }
+    .t118 { animation: t118 120s linear infinite; }
+    @keyframes t119 { 0% { opacity: 0; } 99.1667% { opacity: 0; } 99.1867% { opacity: 1; } 99.98% { opacity: 1; } 100% { opacity: 0; } }
+    .t119 { animation: t119 120s linear infinite; }
+  </style>
+
+  <!-- terminal card. Width kept under Discourse's default max_image_width (690px) so it
+       displays inline instead of getting auto-cropped into a square lightbox thumbnail. -->
+  <rect x="0.5" y="0.5" width="639" height="55" rx="10" fill="#1b1b1e" stroke="#34343a"/>
+
+  <!-- window chrome -->
+  <circle cx="13" cy="12" r="3.3" fill="#ff5f56"/>
+  <circle cx="23" cy="12" r="3.3" fill="#ffbd2e"/>
+  <circle cx="33" cy="12" r="3.3" fill="#27c93f"/>
+  <text x="46" y="16.5" font-size="11" font-weight="400" fill="#8a8a8a">AstraReaper</text>
+  <line x1="0" y1="24" x2="640" y2="24" stroke="#303035" stroke-width="1"/>
+
+  <!-- spinner glyph: CSS keyframes instead of SMIL <animate>, in case the forum's upload
+       sanitizer strips SMIL elements but allowlists CSS animations in <style>. -->
+    <text x="14" y="46" class="g0">&#xB7;</text>
+    <text x="14" y="46" class="g1">&#x2722;</text>
+    <text x="14" y="46" class="g2">&#x2733;</text>
+    <text x="14" y="46" class="g3">&#x2736;</text>
+    <text x="14" y="46" class="g4">&#x273B;</text>
+    <text x="14" y="46" class="g5">&#x273D;</text>
+
+  <!-- 40 slots: 38 verbs randomly sampled (random.sample, not hand-picked), one
+       compaction-hook blue cameo, and one stalled-red "Wandering" cameo. -->
+    <text x="38" y="46" class="t0">
+      <tspan class="verbGroup"><tspan>Z</tspan><tspan>i</tspan><tspan>g</tspan><tspan>z</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t1">
+      <tspan class="verbGroup"><tspan>Z</tspan><tspan>i</tspan><tspan>g</tspan><tspan>z</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (2s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t2">
+      <tspan class="verbGroup"><tspan>Z</tspan><tspan>i</tspan><tspan>g</tspan><tspan>z</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (3s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t3">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>i</tspan><tspan>t</tspan><tspan>t</tspan><tspan>e</tspan><tspan>r</tspan><tspan>b</tspan><tspan>u</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (4s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t4">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>i</tspan><tspan>t</tspan><tspan>t</tspan><tspan>e</tspan><tspan>r</tspan><tspan>b</tspan><tspan>u</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (5s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t5">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>i</tspan><tspan>t</tspan><tspan>t</tspan><tspan>e</tspan><tspan>r</tspan><tspan>b</tspan><tspan>u</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (6s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t6">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>r</tspan><tspan>a</tspan><tspan>v</tspan><tspan>e</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (7s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t7">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>r</tspan><tspan>a</tspan><tspan>v</tspan><tspan>e</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (8s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t8">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>r</tspan><tspan>a</tspan><tspan>v</tspan><tspan>e</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (9s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t9">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>l</tspan><tspan>o</tspan><tspan>v</tspan><tspan>i</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (10s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t10">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>l</tspan><tspan>o</tspan><tspan>v</tspan><tspan>i</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (11s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t11">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>l</tspan><tspan>o</tspan><tspan>v</tspan><tspan>i</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (12s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t12">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>r</tspan><tspan>n</tspan><tspan>i</tspan><tspan>s</tspan><tspan>h</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (13s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t13">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>r</tspan><tspan>n</tspan><tspan>i</tspan><tspan>s</tspan><tspan>h</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (14s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t14">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>r</tspan><tspan>n</tspan><tspan>i</tspan><tspan>s</tspan><tspan>h</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (15s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t15">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>v</tspan><tspan>a</tspan><tspan>p</tspan><tspan>o</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (16s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t16">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>v</tspan><tspan>a</tspan><tspan>p</tspan><tspan>o</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (17s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t17">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>v</tspan><tspan>a</tspan><tspan>p</tspan><tspan>o</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (18s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t18">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>a</tspan><tspan>n</tspan><tspan>o</tspan><tspan>o</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (19s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t19">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>a</tspan><tspan>n</tspan><tspan>o</tspan><tspan>o</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (20s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t20">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>a</tspan><tspan>n</tspan><tspan>o</tspan><tspan>o</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (21s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t21">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>n</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (22s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t22">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>n</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (23s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t23">
+      <tspan class="verbGroup"><tspan>E</tspan><tspan>n</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (24s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t24">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>l</tspan><tspan>a</tspan><tspan>u</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (25s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t25">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>l</tspan><tspan>a</tspan><tspan>u</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (26s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t26">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>l</tspan><tspan>a</tspan><tspan>u</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (27s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t27">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>-</tspan><tspan>d</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (28s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t28">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>-</tspan><tspan>d</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (29s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t29">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>-</tspan><tspan>d</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (30s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t30">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>o</tspan><tspan>o</tspan><tspan>t</tspan><tspan>s</tspan><tspan>t</tspan><tspan>r</tspan><tspan>a</tspan><tspan>p</tspan><tspan>p</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (31s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t31">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>o</tspan><tspan>o</tspan><tspan>t</tspan><tspan>s</tspan><tspan>t</tspan><tspan>r</tspan><tspan>a</tspan><tspan>p</tspan><tspan>p</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (32s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t32">
+      <tspan class="verbGroup"><tspan>B</tspan><tspan>o</tspan><tspan>o</tspan><tspan>t</tspan><tspan>s</tspan><tspan>t</tspan><tspan>r</tspan><tspan>a</tspan><tspan>p</tspan><tspan>p</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (33s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t33">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>e</tspan><tspan>r</tspan><tspan>e</tspan><tspan>b</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (34s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t34">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>e</tspan><tspan>r</tspan><tspan>e</tspan><tspan>b</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (35s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t35">
+      <tspan class="verbGroup"><tspan>C</tspan><tspan>e</tspan><tspan>r</tspan><tspan>e</tspan><tspan>b</tspan><tspan>r</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (36s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t36">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>i</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>e</tspan><tspan>-</tspan><tspan>f</tspan><tspan>a</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (37s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t37">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>i</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>e</tspan><tspan>-</tspan><tspan>f</tspan><tspan>a</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (38s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t38">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>i</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>e</tspan><tspan>-</tspan><tspan>f</tspan><tspan>a</tspan><tspan>d</tspan><tspan>d</tspan><tspan>l</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (39s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t39">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>s</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (40s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t40">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>s</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (41s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t41">
+      <tspan class="verbGroup"><tspan>D</tspan><tspan>i</tspan><tspan>s</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (42s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t42">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>l</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>r</tspan><tspan>t</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (43s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t43">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>l</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>r</tspan><tspan>t</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (44s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t44">
+      <tspan class="verbGroup"><tspan>F</tspan><tspan>l</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>r</tspan><tspan>t</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>b</tspan><tspan>b</tspan><tspan>e</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (45s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t45">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>v</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (46s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t46">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>v</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (47s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t47">
+      <tspan class="verbGroup"><tspan>G</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>v</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (48s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t48">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>u</tspan><tspan>l</tspan><tspan>l</tspan><tspan>a</tspan><tspan>b</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>o</tspan><tspan>o</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (49s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t49">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>u</tspan><tspan>l</tspan><tspan>l</tspan><tspan>a</tspan><tspan>b</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>o</tspan><tspan>o</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (50s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t50">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>u</tspan><tspan>l</tspan><tspan>l</tspan><tspan>a</tspan><tspan>b</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>o</tspan><tspan>o</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (51s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t51">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>y</tspan><tspan>p</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (52s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t52">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>y</tspan><tspan>p</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (53s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t53">
+      <tspan class="verbGroup"><tspan>H</tspan><tspan>y</tspan><tspan>p</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (54s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t54">
+      <tspan class="verbGroup"><tspan>I</tspan><tspan>o</tspan><tspan>n</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (55s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t55">
+      <tspan class="verbGroup"><tspan>I</tspan><tspan>o</tspan><tspan>n</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (56s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t56">
+      <tspan class="verbGroup"><tspan>I</tspan><tspan>o</tspan><tspan>n</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (57s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t57">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>e</tspan><tspan>n</tspan><tspan>n</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (58s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t58">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>e</tspan><tspan>n</tspan><tspan>n</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (59s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t59">
+      <tspan class="verbGroup"><tspan>J</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>e</tspan><tspan>n</tspan><tspan>n</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 0s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t60">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>o</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>g</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 1s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t61">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>o</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>g</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 2s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t62">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>o</tspan><tspan>l</tspan><tspan>l</tspan><tspan>y</tspan><tspan>g</tspan><tspan>a</tspan><tspan>g</tspan><tspan>g</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 3s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t63">
+      <tspan class="verbGroup"><tspan>K</tspan><tspan>n</tspan><tspan>e</tspan><tspan>a</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 4s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t64">
+      <tspan class="verbGroup"><tspan>K</tspan><tspan>n</tspan><tspan>e</tspan><tspan>a</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 5s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t65">
+      <tspan class="verbGroup"><tspan>K</tspan><tspan>n</tspan><tspan>e</tspan><tspan>a</tspan><tspan>d</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 6s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t66">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>e</tspan><tspan>v</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 7s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t67">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>e</tspan><tspan>v</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 8s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t68">
+      <tspan class="verbGroup"><tspan>L</tspan><tspan>e</tspan><tspan>v</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 9s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t69">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>e</tspan><tspan>t</tspan><tspan>a</tspan><tspan>m</tspan><tspan>o</tspan><tspan>r</tspan><tspan>p</tspan><tspan>h</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 10s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t70">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>e</tspan><tspan>t</tspan><tspan>a</tspan><tspan>m</tspan><tspan>o</tspan><tspan>r</tspan><tspan>p</tspan><tspan>h</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 11s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t71">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>e</tspan><tspan>t</tspan><tspan>a</tspan><tspan>m</tspan><tspan>o</tspan><tspan>r</tspan><tspan>p</tspan><tspan>h</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 12s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t72">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>o</tspan><tspan>o</tspan><tspan>n</tspan><tspan>w</tspan><tspan>a</tspan><tspan>l</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 13s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t73">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>o</tspan><tspan>o</tspan><tspan>n</tspan><tspan>w</tspan><tspan>a</tspan><tspan>l</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 14s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t74">
+      <tspan class="verbGroup"><tspan>M</tspan><tspan>o</tspan><tspan>o</tspan><tspan>n</tspan><tspan>w</tspan><tspan>a</tspan><tspan>l</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 15s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t75">
+      <tspan class="verbGroup"><tspan>N</tspan><tspan>e</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 16s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t76">
+      <tspan class="verbGroup"><tspan>N</tspan><tspan>e</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 17s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t77">
+      <tspan class="verbGroup"><tspan>N</tspan><tspan>e</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 18s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t78">
+      <tspan class="verbGroup"><tspan>O</tspan><tspan>s</tspan><tspan>m</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 19s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t79">
+      <tspan class="verbGroup"><tspan>O</tspan><tspan>s</tspan><tspan>m</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 20s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t80">
+      <tspan class="verbGroup"><tspan>O</tspan><tspan>s</tspan><tspan>m</tspan><tspan>o</tspan><tspan>s</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 21s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t81">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>e</tspan><tspan>r</tspan><tspan>c</tspan><tspan>o</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 22s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t82">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>e</tspan><tspan>r</tspan><tspan>c</tspan><tspan>o</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 23s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t83">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>e</tspan><tspan>r</tspan><tspan>c</tspan><tspan>o</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 24s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t84">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>r</tspan><tspan>e</tspan><tspan>s</tspan><tspan>t</tspan><tspan>i</tspan><tspan>d</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 25s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t85">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>r</tspan><tspan>e</tspan><tspan>s</tspan><tspan>t</tspan><tspan>i</tspan><tspan>d</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 26s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t86">
+      <tspan class="verbGroup"><tspan>P</tspan><tspan>r</tspan><tspan>e</tspan><tspan>s</tspan><tspan>t</tspan><tspan>i</tspan><tspan>d</tspan><tspan>i</tspan><tspan>g</tspan><tspan>i</tspan><tspan>t</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 27s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t87">
+      <tspan class="verbGroup"><tspan>Q</tspan><tspan>u</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>u</tspan><tspan>m</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 28s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t88">
+      <tspan class="verbGroup"><tspan>Q</tspan><tspan>u</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>u</tspan><tspan>m</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 29s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t89">
+      <tspan class="verbGroup"><tspan>Q</tspan><tspan>u</tspan><tspan>a</tspan><tspan>n</tspan><tspan>t</tspan><tspan>u</tspan><tspan>m</tspan><tspan>i</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 30s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t90">
+      <tspan class="verbGroupBlue"><tspan>C</tspan><tspan>o</tspan><tspan>m</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan> </tspan><tspan>c</tspan><tspan>o</tspan><tspan>n</tspan><tspan>v</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>o</tspan><tspan>n</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 31s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t91">
+      <tspan class="verbGroupBlue"><tspan>C</tspan><tspan>o</tspan><tspan>m</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan> </tspan><tspan>c</tspan><tspan>o</tspan><tspan>n</tspan><tspan>v</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>o</tspan><tspan>n</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 32s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t92">
+      <tspan class="verbGroupBlue"><tspan>C</tspan><tspan>o</tspan><tspan>m</tspan><tspan>p</tspan><tspan>a</tspan><tspan>c</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan> </tspan><tspan>c</tspan><tspan>o</tspan><tspan>n</tspan><tspan>v</tspan><tspan>e</tspan><tspan>r</tspan><tspan>s</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>o</tspan><tspan>n</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 33s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t93">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>m</tspan><tspan>a</tspan><tspan>t</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 34s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t94">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>m</tspan><tspan>a</tspan><tspan>t</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 35s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t95">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>m</tspan><tspan>a</tspan><tspan>t</tspan><tspan>a</tspan><tspan>z</tspan><tspan>z</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 36s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t96">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>e</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 37s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t97">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>e</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 38s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t98">
+      <tspan class="verbGroup"><tspan>R</tspan><tspan>e</tspan><tspan>c</tspan><tspan>o</tspan><tspan>m</tspan><tspan>b</tspan><tspan>o</tspan><tspan>b</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 39s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t99">
+      <tspan class="verbGroup"><tspan>S</tspan><tspan>p</tspan><tspan>e</tspan><tspan>l</tspan><tspan>u</tspan><tspan>n</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 40s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t100">
+      <tspan class="verbGroup"><tspan>S</tspan><tspan>p</tspan><tspan>e</tspan><tspan>l</tspan><tspan>u</tspan><tspan>n</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 41s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t101">
+      <tspan class="verbGroup"><tspan>S</tspan><tspan>p</tspan><tspan>e</tspan><tspan>l</tspan><tspan>u</tspan><tspan>n</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 42s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t102">
+      <tspan class="verbGroup"><tspan>T</tspan><tspan>o</tspan><tspan>m</tspan><tspan>f</tspan><tspan>o</tspan><tspan>o</tspan><tspan>l</tspan><tspan>e</tspan><tspan>r</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 43s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t103">
+      <tspan class="verbGroup"><tspan>T</tspan><tspan>o</tspan><tspan>m</tspan><tspan>f</tspan><tspan>o</tspan><tspan>o</tspan><tspan>l</tspan><tspan>e</tspan><tspan>r</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 44s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t104">
+      <tspan class="verbGroup"><tspan>T</tspan><tspan>o</tspan><tspan>m</tspan><tspan>f</tspan><tspan>o</tspan><tspan>o</tspan><tspan>l</tspan><tspan>e</tspan><tspan>r</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 45s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t105">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>d</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 46s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t106">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>d</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 47s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t107">
+      <tspan class="verbGroup"><tspan>U</tspan><tspan>n</tspan><tspan>d</tspan><tspan>u</tspan><tspan>l</tspan><tspan>a</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 48s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t108">
+      <tspan class="verbGroup"><tspan>V</tspan><tspan>i</tspan><tspan>b</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 49s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t109">
+      <tspan class="verbGroup"><tspan>V</tspan><tspan>i</tspan><tspan>b</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 50s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t110">
+      <tspan class="verbGroup"><tspan>V</tspan><tspan>i</tspan><tspan>b</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 51s &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t111">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>a</tspan><tspan>t</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>m</tspan><tspan>a</tspan><tspan>c</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 52s &#xB7; &#x2193; 6.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t112">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>a</tspan><tspan>t</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>m</tspan><tspan>a</tspan><tspan>c</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 53s &#xB7; &#x2193; 6.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t113">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>a</tspan><tspan>t</tspan><tspan>c</tspan><tspan>h</tspan><tspan>a</tspan><tspan>m</tspan><tspan>a</tspan><tspan>c</tspan><tspan>a</tspan><tspan>l</tspan><tspan>l</tspan><tspan>i</tspan><tspan>t</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 54s &#xB7; &#x2193; 6.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t114">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>i</tspan><tspan>s</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 55s &#xB7; &#x2193; 6.8k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t115">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>i</tspan><tspan>s</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 56s &#xB7; &#x2193; 6.8k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t116">
+      <tspan class="verbGroup"><tspan>W</tspan><tspan>h</tspan><tspan>i</tspan><tspan>s</tspan><tspan>k</tspan><tspan>i</tspan><tspan>n</tspan><tspan>g</tspan><tspan>&#x2026;</tspan></tspan>
+      <tspan fill="#8a8a8a"> (1m 57s &#xB7; &#x2193; 6.8k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t117">
+      <tspan class="verbStalled">Wandering&#x2026;</tspan>
+      <tspan fill="#8a8a8a"> (1m 58s &#xB7; &#x2193; 7.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t118">
+      <tspan class="verbStalled">Wandering&#x2026;</tspan>
+      <tspan fill="#8a8a8a"> (1m 59s &#xB7; &#x2193; 7.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+    <text x="38" y="46" class="t119">
+      <tspan class="verbStalled">Wandering&#x2026;</tspan>
+      <tspan fill="#8a8a8a"> (2m 0s &#xB7; &#x2193; 7.2k tokens &#xB7; </tspan>
+      <tspan class="thinkText">thinking with xhigh effort</tspan>
+      <tspan fill="#8a8a8a">)</tspan>
+    </text>
+</svg>
